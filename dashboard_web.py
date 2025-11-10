@@ -10,6 +10,7 @@ import signal
 from datetime import datetime
 import time
 
+
 # === 봇 프로세스 관리 ===
 BOT_PROCESS = None
 PID_FILE = "bot_pid.txt"
@@ -169,14 +170,44 @@ while True:
             else:
                 st.info("아직 수익 없음")
 
-        # === 실시간 로그 ===
+        # === 실시간 로그 (스크롤바 추가!) ===
         st.subheader("실시간 로그")
         try:
             with open('trader.log', 'r', encoding='utf-8') as f:
-                lines = f.readlines()[-10:]
-                log_text = "".join(lines)
-                st.code(log_text, language=None)
+                lines = f.readlines()   # [-50:]  # 최근 50줄만 (성능 UP)
+            log_text = "".join(lines)
+            
+            # 스크롤 가능한 텍스트 박스
+            # st.code(log_text, language=None)
+            
+            # 또는 더 예쁜 스크롤 박스 (옵션)
+            st.markdown(
+                f"""
+                <div style="
+                    height: 300px;
+                    overflow-y: auto;
+                    padding: 10px;
+                    background-color: #f4f4f4;
+                    border-radius: 8px;
+                    font-family: monospace;
+                    font-size: 13px;
+                    white-space: pre;
+                ">
+                {''.join([line.replace('<', '&lt;').replace('>', '&gt;') for line in lines])}
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
         except:
             st.info("로그 없음")
 
     time.sleep(5)
+
+    from pyngrok import ngrok
+    import threading
+
+    def start_ngrok():
+        url = ngrok.connect(5000)
+        st.sidebar.success(f"폰 접속: {url}")
+
+    threading.Thread(target=start_ngrok, daemon=True).start()

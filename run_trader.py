@@ -63,7 +63,7 @@ logger.info(f"강제 선별 코인: {selected_coins}")
 send_kakao("누나야! 강제 선별 완료! 10개 코인으로 즉시 시작!")
 
 # === 업그레이드 설정 ===
-DROP_THRESHOLD = 0.10
+DROP_THRESHOLD = 0.04
 RISE_TARGET = 0.06
 STOP_LOSS = 0.015
 TRAILING_STOP = 0.03
@@ -132,18 +132,18 @@ def get_top20_coins_exclude_btc():
             symbol = coin['symbol'].upper()
             if symbol in bithumb_tickers:
                 final_coins.append(symbol)
-            if len(final_coins) >= 20:
+            if len(final_coins) >= 70:
                 break
 
         if not final_coins:
             raise Exception("빗썸 상장 코인 없음")
 
-        logger.info(f"BTC 제외 상위 20개 선별 완료: {final_coins}")
-        send_kakao(f"상위 20개 선별: {', '.join(final_coins[:5])}... (총 {len(final_coins)}개)")
+        logger.info(f"BTC 제외 상위 70개 선별 완료: {final_coins}")
+        send_kakao(f"상위 70개 선별: {', '.join(final_coins[:5])}... (총 {len(final_coins)}개)")
         return final_coins
 
     except Exception as e:
-        logger.error(f"상위 20개 선별 실패: {e}")
+        logger.error(f"상위 70개 선별 실패: {e}")
         fallback = ['ETH', 'XRP', 'DOGE', 'ADA', 'SOL', 'LINK', 'DOT', 'AVAX', 'MATIC', 'LTC',
                     'BCH', 'ETC', 'UNI', 'ICP', 'APT', 'HBAR', 'ATOM', 'VET', 'FIL', 'NEAR']
         logger.warning(f"fallback 사용: {fallback[:10]}...")
