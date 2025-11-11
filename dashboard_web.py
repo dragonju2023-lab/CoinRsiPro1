@@ -174,7 +174,7 @@ while True:
         st.subheader("실시간 로그")
         try:
             with open('trader.log', 'r', encoding='utf-8') as f:
-                lines = f.readlines()   # [-50:]  # 최근 50줄만 (성능 UP)
+                lines = f.readlines()[-200:]  # 최근 50줄만 (성능 UP)
             log_text = "".join(lines)
             
             # 스크롤 가능한 텍스트 박스
@@ -203,11 +203,11 @@ while True:
 
     time.sleep(5)
 
-    from pyngrok import ngrok
-    import threading
+   # from pyngrok import ngrok
+    #import threading
 
-    def start_ngrok():
-        url = ngrok.connect(5000)
-        st.sidebar.success(f"폰 접속: {url}")
+   # def start_ngrok():
+    #    url = ngrok.connect(5000)
+    #    st.sidebar.success(f"폰 접속: {url}")
 
-    threading.Thread(target=start_ngrok, daemon=True).start()
+   # threading.Thread(target=start_ngrok, daemon=True).start()
